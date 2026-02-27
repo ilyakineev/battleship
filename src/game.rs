@@ -109,7 +109,7 @@ impl Game {
 
     fn handle_enemy_turn(&mut self) {
         println!("Ход противника...");
-        thread::sleep(Duration::from_secs(1));
+        thread::sleep(Duration::from_secs(3));
 
         loop {
             let mut rng = rand::thread_rng();
