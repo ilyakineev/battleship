@@ -2,40 +2,45 @@ use crate::board::SeaMap;
 use crate::ship::{Ship, ShipType};
 
 pub struct Enemy {
-    sea_map_enemy: SeaMap,
-    ships: Vec<Ship>,
+    pub sea_map_enemy: SeaMap,
+    pub ships: Vec<Ship>,
 }
 
 impl Enemy {
     pub fn new() -> Enemy {
-        println!("Создаем противника");
         Enemy {
             sea_map_enemy: SeaMap::new(10, 10),
-            ships: Self::create_fleet(),
+            ships: Vec::new(),
         }
     }
 
+    pub fn setup_fleet(&mut self) {
+        self.ships = Self::create_fleet();
+        self.sea_map_enemy.place_ships_automatically(&mut self.ships);
+    }
+
     fn create_fleet() -> Vec<Ship> {
-        let mut ships: Vec<Ship> = Vec::new();
+        let mut ships = Vec::new();
+        let ship_types = [
+            ShipType::ExtraLarge,
+            ShipType::Large,
+            ShipType::Large,
+            ShipType::Medium,
+            ShipType::Medium,
+            ShipType::Medium,
+            ShipType::Small,
+            ShipType::Small,
+            ShipType::Small,
+            ShipType::Small,
+        ];
 
-        // Создаем 4 х Small,
-        ships.push(Ship::new(ShipType::Small));
-        ships.push(Ship::new(ShipType::Small));
-        ships.push(Ship::new(ShipType::Small));
-        ships.push(Ship::new(ShipType::Small));
+        for (i, &ship_type) in ship_types.iter().enumerate() {
+            ships.push(Ship::new(i, ship_type));
+        }
+        ships
+    }
 
-        // Создаем 3 х Medium,
-        ships.push(Ship::new(ShipType::Medium));
-        ships.push(Ship::new(ShipType::Medium));
-        ships.push(Ship::new(ShipType::Medium));
-
-        // Создаем 2 х Large,
-        ships.push(Ship::new(ShipType::Large));
-        ships.push(Ship::new(ShipType::Large));
-
-        // Создаем 1 х ExtraLarge,
-        ships.push(Ship::new(ShipType::ExtraLarge));
-
-        return ships;
+    pub fn draw_sea_map(&self) {
+        self.sea_map_enemy.draw(true);
     }
 }

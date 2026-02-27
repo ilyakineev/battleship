@@ -1,30 +1,29 @@
 use std::io;
 
-pub fn write() -> u8 {
-    let mut number = String::new();
-    io::stdin()
-        .read_line(&mut number)
-        .expect("Не удалось прочитать строку");
-    let number: u8 = number
-        .trim()
-        .parse()
-        .expect("Ошибка преобразования в число");
-    number
-}
+pub fn read_coordinates() -> Option<(u8, u8)> {
+    let mut input = String::new();
+    if io::stdin().read_line(&mut input).is_err() {
+        return None;
+    }
+    let input = input.trim().to_uppercase();
+    if input.len() < 2 {
+        return None;
+    }
 
-pub fn ask_yes_no() -> bool {
-    let mut user_input = String::new();
-    io::stdin()
-        .read_line(&mut user_input)
-        .expect("Не удалось прочитать строку");
+    let col = input.chars().next()? as u8;
+    let row_str: String = input.chars().skip(1).collect();
 
-    let choice = user_input.trim().to_lowercase();
+    let row: u8 = row_str.parse().ok()?;
 
-    choice == "да"
+    if col < b'A' || col > b'J' || row < 1 || row > 10 {
+        return None;
+    }
+
+    Some((col - b'A', row - 1))
 }
 
 pub fn close_game() {
-    println!("Нажмите Enter чтобы выйти...");
+    println!("\nНажмите Enter чтобы выйти...");
     let mut exit = String::new();
     let _ = std::io::stdin().read_line(&mut exit);
 }
