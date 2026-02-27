@@ -17,7 +17,6 @@ pub struct Ship {
 
 impl Ship {
     pub fn new(id: usize, ship_type: ShipType) -> Self {
-        println!("Создаем корабль: {:?} с ID: {}", ship_type, id);
         Self {
             id,
             ship_type,
